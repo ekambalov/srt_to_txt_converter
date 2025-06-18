@@ -1,72 +1,64 @@
 import { parseSRTtoText } from './srtParser';
+import copyIconUrl from '../img/copy-link-icon.svg';
 import './style.css';
 
-const fileInput = document.getElementById('srtFile');
-const textInput = document.getElementById('textInput');
-const output = document.getElementById('output');
-const convertBtn = document.getElementById('convertBtn');
-const copyBtn = document.getElementById('copyBtn');
+document.addEventListener('DOMContentLoaded', () => {
+    const fileInput = document.getElementById('srtFile');
+    const textInput = document.getElementById('textInput');
+    const output = document.getElementById('output');
+    const convertBtn = document.getElementById('convertBtn');
+    const copyBtn = document.getElementById('copyBtn');
 
-// Спачатку хаваем кнопку "Капіраваць"
-copyBtn.style.display = 'none';
+    // Устаўляем SVG унутр кнопкі
+    copyBtn.innerHTML = `<img src="${copyIconUrl}" alt="Капіраваць" class="copy-icon">`;
 
-convertBtn.addEventListener('click', () => {
-    if (fileInput.files.length > 0) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const result = parseSRTtoText(e.target.result);
-            output.textContent = result;
+    // Схоўваем кнопку на пачатку
+    copyBtn.classList.remove('visible');
 
-            textInput.value = '';
-            fileInput.value = '';
+    convertBtn.addEventListener('click', () => {
+        let result = '';
+        if (fileInput.files.length > 0) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                result = parseSRTtoText(e.target.result);
+                finalize(result);
+            };
+            reader.readAsText(fileInput.files[0]);
+        } else if (textInput.value.trim()) {
+            result = parseSRTtoText(textInput.value);
+            finalize(result);
+        } else {
+            output.textContent = 'Увядзіце тэкст або загрузіце файл.';
+            copyBtn.classList.remove('visible');
+        }
+    });
 
-            copyBtn.style.display = 'inline-block';
-        };
-        reader.readAsText(fileInput.files[0]);
-
-    } else if (textInput.value.trim()) {
-        const result = parseSRTtoText(textInput.value);
+    function finalize(result) {
         output.textContent = result;
-
         textInput.value = '';
         fileInput.value = '';
-
-        copyBtn.style.display = 'inline-block';
-    } else {
-        output.textContent = 'Увядзіце тэкст або загрузіце файл.';
-        copyBtn.style.display = 'none';
-    }
-});
-
-copyBtn.addEventListener('click', async () => {
-    const text = output.textContent;
-    if (!text) {
-        alert('Няма тэксту для капіявання.');
-        return;
+        copyBtn.classList.add('visible');
     }
 
-    if (navigator.clipboard && navigator.clipboard.writeText) {
+    copyBtn.addEventListener('click', async () => {
+        const text = output.textContent;
+        if (!text) return;
+
         try {
             await navigator.clipboard.writeText(text);
-            alert('Тэкст скапіяваны ў буфер 😊');
         } catch {
-            fallbackCopy(text);
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
         }
-    } else {
-        fallbackCopy(text);
-    }
-});
 
-function fallbackCopy(text) {
-    const ta = document.createElement('textarea');
-    ta.value = text;
-    document.body.appendChild(ta);
-    ta.select();
-    try {
-        document.execCommand('copy');
-        alert('Тэкст скапіяваны ў буфер 😊');
-    } catch {
-        alert('Капіраванне не атрымалася');
-    }
-    document.body.removeChild(ta);
-}
+        const orig = copyBtn.innerHTML;
+        copyBtn.textContent = 'Скапіявана!';
+        setTimeout(() => {
+            copyBtn.innerHTML = orig;
+        }, 3000);
+    });
+});

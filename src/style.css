@@ -16,3 +16,36 @@ input {
     background: white;
     padding: 1rem;
 }
+
+.output-container {
+    position: relative;
+}
+
+#output {
+    padding: 1rem;
+    background: white;
+    white-space: pre-wrap;
+    overflow-x: auto;
+}
+
+.copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.output-container:hover .copy-btn,
+.copy-btn.visible {
+    opacity: 1;
+}
+
+.copy-btn .copy-icon {
+    width: 20px;
+    height: 20px;
+    fill: #555;
+}

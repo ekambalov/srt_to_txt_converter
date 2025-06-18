@@ -3,19 +3,23 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>SRT у тэкст</title>
+    <title>SRT → Тэкст</title>
 </head>
 
 <body>
-    <h1>Канвэртацыя SRT у тэкст</h1>
-    <input id="srtFile" type="file" accept=".srt">
-    <textarea id="textInput"></textarea>
+    <h1>Канвэртар SRT → Тэкст</h1>
+    <input type="file" id="srtFile" accept=".srt"><br>
+    <textarea id="textInput" rows="6" placeholder="Або ўстаўце тэкст SRT..."></textarea><br>
     <button id="convertBtn">Канвертаваць</button>
-    <div class="">
-        <button id="copyBtn" style="margin-top:10px; display:none;">Капіраваць тэкст</button>
+
+    <div class="output-container">
+        <pre id="output"></pre>
+        <button id="copyBtn" class="copy-btn">
+            <img src="/img/copy-link-icon.svg" alt="Капіраваць тэкст">
+        </button>
     </div>
 
-    <pre id="output"></pre>
+    <!-- Падключэнне JS і CSS -->
     <script src="/bundle.js"></script>
 </body>
 
