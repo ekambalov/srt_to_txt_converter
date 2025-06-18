@@ -2,7 +2,7 @@
     "name": "srt-cleaner",
     "version": "1.0.0",
     "scripts": {
-        "build": "webpack",
+        "build": "webpack --mode production",
         "start": "webpack serve --open"
     },
     "devDependencies": {
