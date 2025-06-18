@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="be">
+
+<head>
+    <meta charset="UTF-8">
+    <title>SRT → Тэкст</title>
+</head>
+
+<body>
+    <h1>Канвертар SRT → Тэкст</h1>
+    <input type="file" id="srtFile" accept=".srt"><br>
+    <textarea id="textInput" rows="6" placeholder="Або ўстаўце тэкст SRT..."></textarea><br>
+    <button id="convertBtn">Канвертаваць</button>
+
+    <div class="output-container">
+        <pre id="output"></pre>
+        <button id="copyBtn" class="copy-btn">
+            <img src="/img/copy-link-icon.svg" alt="Капіраваць тэкст">
+        </button>
+    </div>
+
+    <!-- Падключэнне JS і CSS -->
+    <script src="bundle.js"></script>
+</body>
+
+</html>
