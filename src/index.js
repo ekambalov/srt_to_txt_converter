@@ -9,14 +9,23 @@ const convertBtn = document.getElementById('convertBtn');
 convertBtn.addEventListener('click', () => {
     if (fileInput.files.length > 0) {
         const reader = new FileReader();
-        reader.onload = function (e) {
+        reader.onload = (e) => {
             const result = parseSRTtoText(e.target.result);
             output.textContent = result;
+
+            // ✅ Ачыстка палёў
+            textInput.value = '';
+            fileInput.value = '';
         };
         reader.readAsText(fileInput.files[0]);
+
     } else if (textInput.value.trim()) {
         const result = parseSRTtoText(textInput.value);
         output.textContent = result;
+
+        // ✅ Ачыстка палёў
+        textInput.value = '';
+        fileInput.value = '';
     } else {
         output.textContent = 'Увядзіце тэкст або загрузіце файл.';
     }
